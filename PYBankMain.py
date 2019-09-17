@@ -1,13 +1,17 @@
+#Dependencies
 import os
 import csv
 
+#File Import & Outport Path
 csvpath = os.path.join('Desktop','PyBank', 'Resources', 'budget_data.csv')
 csvpath_out = os.path.join('Desktop','PyBank', 'Resources', 'budget_data.csv')
 
+#Read the file
 with open(csvpath, newline= '') as csvfile:
     csvreader = csv.reader(csvfile, delimiter= ',')
     csv_header = next(csvreader, None)
 
+    #Variables Needed
     total_months = 0
     total_income= 0
     change = []
@@ -18,15 +22,18 @@ with open(csvpath, newline= '') as csvfile:
     prior = 0
     
 
+    #Loop
     for row in csvreader:
         total_months += 1
         total_income += int(row[1])
         
+        #To find average difference
         difference = int(row[1]) - int(prior)
         prior = row[1]
         change.append(difference)
         average = sum(change) / len(change)
-
+        
+        #Max & Min statements
         if int(row[1]) - average_change > greatest_increase:
             greatest_increase = int(row[1]) - average_change
             greatest_increase_month = row[0]
@@ -34,9 +41,9 @@ with open(csvpath, newline= '') as csvfile:
             greatest_decrease = int(row[1]) - average_change
             greatest_decrease_month = row[0]
           
-
         average_change = int(row[1])
-
+        
+#Print
 with open(csvpath_out, 'w', newline= '') as text_file:
 
     text_file.write('Financial Analysis\n')
